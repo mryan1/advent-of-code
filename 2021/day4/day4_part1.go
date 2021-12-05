@@ -61,14 +61,15 @@ func updateBoards(b *[][5][5]string, cn string) int {
 
 			for k, kv := range jv {
 				if kv == cn {
+					(*b)[i][j][k] = "*"
 					//check for winner in horizontal direction
-					if reflect.DeepEqual((*b)[i][k][0:5], winner) {
+					if reflect.DeepEqual((*b)[i][j][0:5], winner) {
 						return i
-					} else if reflect.DeepEqual(boardColumn((*b)[i], j), winner) {
+					} else if reflect.DeepEqual(boardColumn((*b)[i], k), winner) {
 						//check for winner in verticle direction
 						return i
 					}
-					(*b)[i][j][k] = "*"
+
 				}
 			}
 		}
@@ -101,8 +102,11 @@ func main() {
 		//iterate though each board and if it matches replace it with a *
 		p = updateBoards(&boards, iv)
 		if p != -1 {
-			lastCalled, _ := strconv.Atoi(string(calledNumbers[i-1]))
+			lastCalled, _ := strconv.Atoi(string(calledNumbers[i]))
+			fmt.Println("Found winning board: ", p, " which is ", boards[p], " current number is ", lastCalled)
+
 			fmt.Println("Winning value: ", calculateWinner(boards[p], p)*lastCalled)
+			//71683 is wrong
 			break
 		}
 
